@@ -6,7 +6,20 @@
         xmlns:local="clr-namespace:KebabMasterApp"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
-    <Grid RenderTransformOrigin="0.485,0.471">
-
+    <Grid RenderTransformOrigin="0.485,0.471" ShowGridLines="True">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="145*" />
+            <RowDefinition Height="235*" />
+            <RowDefinition Height="54*" />
+        </Grid.RowDefinitions>
+        <TextBlock FontSize="50" Text="Test"/>
+        <ListBox Grid.Column="1" Grid.Row="2">
+            <ListBoxItem ></ListBoxItem>
+            <ListBoxItem></ListBoxItem>
+        </ListBox>
     </Grid>
 </Window>

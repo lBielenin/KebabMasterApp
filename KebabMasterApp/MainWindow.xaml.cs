@@ -23,6 +23,7 @@ namespace KebabMasterApp
         public MainWindow()
         {
             InitializeComponent();
+            //DataContext = 
         }
     }
 }
