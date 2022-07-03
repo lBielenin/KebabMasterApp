@@ -1,5 +1,11 @@
-﻿using System;
+﻿using KebabCore.Entities;
+using KebabCore.Entities.Menu;
+using KebabInfrastructure;
+using KebabInfrastructure.Dto;
+using KebabInfrastructure.Repositories;
+using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -20,10 +26,39 @@ namespace KebabMasterApp
     /// </summary>
     public partial class MainWindow : Window
     {
+        public List<KebabCore.Entities.Menu.MenuItem> Menu;
+        public ObservableCollection<KebabCore.Entities.Orders.OrderItem> Order = 
+            new ObservableCollection<KebabCore.Entities.Orders.OrderItem>();
         public MainWindow()
         {
             InitializeComponent();
-            //DataContext = 
+
+            var repo = new MenuService();
+
+            Menu = repo.GetNewest();
+            menu.ItemsSource = Menu;
+            order.ItemsSource = Order;
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            var index = menu.SelectedIndex;
+            if (index == -1)
+                return;
+            var itemToAdd = Menu[index];
+            var itemToUpdate = Order.FirstOrDefault(o => o.MenuItem.MenuItemId == itemToAdd.MenuItemId);
+
+            if (itemToUpdate != null)
+            {
+                Order.Remove(itemToUpdate);
+                itemToUpdate.Quantity++;
+                Order.Add(itemToUpdate);
+                return;
+            }
+
+            Order.Add(new KebabCore.Entities.Orders.OrderItem { MenuItem = Menu[index] });
+            
+
         }
     }
 }
