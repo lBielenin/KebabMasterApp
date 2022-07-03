@@ -1,4 +1,5 @@
-﻿using KebabInfrastructure.Context;
+﻿using KebabCore.Entities.Orders;
+using KebabInfrastructure.Context;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,6 +21,10 @@ namespace KebabInfrastructure
             }
         }
 
+        public bool PlaceOrder(Order order)
+        {
+            DbContext.Orders.Add(order);
+        }
         public void Dispose()
         {
             throw new NotImplementedException();

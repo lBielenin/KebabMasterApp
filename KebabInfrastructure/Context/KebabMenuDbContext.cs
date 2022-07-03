@@ -1,4 +1,5 @@
 ﻿using KebabCore.Entities.Menu;
+using KebabCore.Entities.Orders;
 using Microsoft.EntityFrameworkCore;
 
 namespace KebabInfrastructure.Context
@@ -8,6 +9,8 @@ namespace KebabInfrastructure.Context
         public DbSet<Menu> Menus { get; set; }
         public DbSet<MenuItem> MenuItems { get; set; }
         public DbSet<Item> Items { get; set; }
+
+        public DbSet<Order> Orders { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {

@@ -47,11 +47,12 @@
             </ListView.View>
         </ListView>
         <Button Content="Add Position" Margin="19,26,270,75" Grid.Row="2" Click="Button_Click"/>
-        <TextBlock Text="Payment Method"  Grid.Column="1" Grid.Row="1" Margin="0,219,0,0" Grid.RowSpan="2"></TextBlock>
+        <TextBlock Text="Payment Method"  Grid.Column="1" Grid.Row="1" Margin="150,230,0,25" Grid.RowSpan="2" ></TextBlock>
         <ComboBox Width="120" Grid.Column="1" Margin="255,10,25,94" Grid.Row="2" Name="Payment">
-            <ComboBoxItem></ComboBoxItem>
-            <ComboBoxItem></ComboBoxItem>
+            <ComboBoxItem Content="Cash" />
+            <ComboBoxItem Content="Card" />
         </ComboBox>
+        <Button Content="Place order" Margin="255,76,34,25" Grid.Row="2" Click="Button_Click_1" Grid.Column="1"/>
 
     </Grid>
 </Window>
