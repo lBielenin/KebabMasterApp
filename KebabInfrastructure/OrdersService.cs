@@ -21,9 +21,10 @@ namespace KebabInfrastructure
             }
         }
 
-        public bool PlaceOrder(Order order)
+        public void PlaceOrder(Order order)
         {
             DbContext.Orders.Add(order);
+            DbContext.SaveChanges();
         }
         public void Dispose()
         {

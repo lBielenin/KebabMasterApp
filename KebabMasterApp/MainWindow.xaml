@@ -6,53 +6,13 @@
         xmlns:local="clr-namespace:KebabMasterApp"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
-    <Grid RenderTransformOrigin="0.485,0.471" ShowGridLines="True">
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition/>
-            <ColumnDefinition/>
-        </Grid.ColumnDefinitions>
+
+    <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="86*" />
-            <RowDefinition Height="219*" />
-            <RowDefinition Height="129*" />
+            <RowDefinition />
         </Grid.RowDefinitions>
-        <TextBlock FontSize="50" Text="Test"/>
-        <!--<TreeView Margin="10,10,0,13" Name="TreeView1" HorizontalAlignment="Left" VerticalAlignment="Top" Grid.Column="0" Grid.Row="1" Width="Auto" MinWidth="200" >
-            <TreeViewItem Header="Cold Drinks" Width="96">
-                <TreeViewItem Header="Coke"></TreeViewItem>
-                <TreeViewItem Header="Pepsi"></TreeViewItem>
-                <TreeViewItem Header="Orange Juice"></TreeViewItem>
-                <TreeViewItem Header="Milk"></TreeViewItem>
-                <TreeViewItem Header="Iced Tea"></TreeViewItem>
-                <TreeViewItem Header="Mango Shake"></TreeViewItem>
-            </TreeViewItem>
-        </TreeView>-->
-        <ListView x:Name="menu" Grid.Column="0" Grid.Row="1" Margin="0,39,0,0" >
-
-            <ListView.View>
-                <GridView>
-                    <GridViewColumn Header="Name" Width="120" DisplayMemberBinding="{Binding Name}" />
-                    <GridViewColumn Header="Price" Width="50" DisplayMemberBinding="{Binding Price}" />
-                </GridView>
-            </ListView.View>
-        </ListView>
-        <ListView x:Name="order" Grid.Column="1" Grid.Row="1" Margin="15,15,15,15" >
-
-            <ListView.View>
-                <GridView>
-                    <GridViewColumn Header="Name" Width="120" DisplayMemberBinding="{Binding MenuItem.Name}" />
-                    <GridViewColumn Header="Price" Width="50" DisplayMemberBinding="{Binding MenuItem.Price}" />
-                    <GridViewColumn Header="Quantity" Width="50" DisplayMemberBinding="{Binding Quantity}" />
-                </GridView>
-            </ListView.View>
-        </ListView>
-        <Button Content="Add Position" Margin="19,26,270,75" Grid.Row="2" Click="Button_Click"/>
-        <TextBlock Text="Payment Method"  Grid.Column="1" Grid.Row="1" Margin="150,230,0,25" Grid.RowSpan="2" ></TextBlock>
-        <ComboBox Width="120" Grid.Column="1" Margin="255,10,25,94" Grid.Row="2" Name="Payment">
-            <ComboBoxItem Content="Cash" />
-            <ComboBoxItem Content="Card" />
-        </ComboBox>
-        <Button Content="Place order" Margin="255,76,34,25" Grid.Row="2" Click="Button_Click_1" Grid.Column="1"/>
-
+        <DockPanel>
+            <ContentControl x:Name="ContentArea" Grid.Row="0"/>
+        </DockPanel>
     </Grid>
 </Window>
