@@ -1,13 +1,13 @@
-﻿using System;
+﻿using KebabCore.Models.Orders;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace KebabCore.Entities.Orders
+namespace KebabCore.DomainModels.Orders
 {
-    [Table("Orders", Schema = "Orders")]
     public class Order
     {
         public Guid OrderId { get; init; }

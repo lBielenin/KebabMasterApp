@@ -1,9 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 
-namespace KebabCore.Entities.Menu
+namespace KebabCore.DomainModels.Menu
 {
-    [Table("Menus", Schema = "Menu")]
     public class Menu
     {
         [Key]

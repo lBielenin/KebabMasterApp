@@ -6,13 +6,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace KebabCore.Entities.Menu
+namespace KebabCore.DomainModels.Menu
 {
-    [Table("Items", Schema = "Menu")]
     public class Item
     {
         [Key]
-        public Guid ItemId { get; init; }    
+        public Guid ItemId { get; init; }
         public string Name { get; init; }
         public string Ingredients { get; init; }
     }

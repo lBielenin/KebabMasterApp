@@ -1,9 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace KebabCore.Entities.Menu
+namespace KebabCore.DomainModels.Menu
 {
-    [Table("MenuItems", Schema = "Menu")]
     public class MenuItem
     {
         [Key]
@@ -13,6 +12,5 @@ namespace KebabCore.Entities.Menu
         public Guid ItemId { get; set; }
         public string Name { get; set; }
         public decimal Price { get; set; }
-        //public List<Item> Items { get; set; }
     }
 }

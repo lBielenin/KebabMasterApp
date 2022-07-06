@@ -1,9 +1,7 @@
-﻿using KebabCore.Entities.Menu;
-using System.ComponentModel.DataAnnotations.Schema;
+﻿using System.ComponentModel.DataAnnotations.Schema;
 
-namespace KebabCore.Entities.Orders
+namespace KebabCore.Models.Orders
 {
-    [Table("OrderItem", Schema = "Orders")]
     public class OrderItem
     {
         public Guid OrderItemId { get; set; } = Guid.NewGuid();
@@ -11,7 +9,7 @@ namespace KebabCore.Entities.Orders
 
         public int StatusId { get; init; } = 1;
 
-        //public byte Quantity { get; set; } = 1;
+        public byte Quantity { get; set; } = 1;
         public string? Comment { get; set; }
     }
 }

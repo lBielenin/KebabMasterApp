@@ -1,4 +1,4 @@
-﻿namespace KebabCore.Entities.Orders
+﻿namespace KebabCore.Models.Orders
 {
     public class Item
     {
