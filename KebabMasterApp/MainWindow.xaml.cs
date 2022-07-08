@@ -1,11 +1,4 @@
-﻿using KebabCore.Entities.Orders;
-using KebabInfrastructure;
-using KebabMasterApp.Dtos;
-using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Linq;
-using System.Windows;
+﻿using System.Windows;
 
 namespace KebabMasterApp
 {
@@ -14,9 +7,6 @@ namespace KebabMasterApp
     /// </summary>
     public partial class MainWindow : Window
     {
-        public List<KebabCore.Entities.Menu.MenuItem> Menu;
-        public ObservableCollection<OrderItemDto> Order = 
-            new ObservableCollection<OrderItemDto>();
         public MainWindow()
         {
             InitializeComponent();

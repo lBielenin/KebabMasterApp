@@ -5,7 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:KebabMasterApp"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800">
+             d:DesignHeight="550" d:DesignWidth="900">
     <Grid RenderTransformOrigin="0.485,0.471" ShowGridLines="True">
         <Grid.ColumnDefinitions>
             <ColumnDefinition/>
@@ -21,8 +21,9 @@
 
             <ListView.View>
                 <GridView>
-                    <GridViewColumn Header="Name" Width="120" DisplayMemberBinding="{Binding Name}" />
-                    <GridViewColumn Header="Price" Width="50" DisplayMemberBinding="{Binding Price}" />
+                    <GridViewColumn Header="Category" Width="120" DisplayMemberBinding="{Binding ItemCategory}" />
+                    <GridViewColumn Header="Name" Width="120" DisplayMemberBinding="{Binding ItemName}" />
+                    <GridViewColumn Header="Price" Width="50" DisplayMemberBinding="{Binding ItemPrice}" />
                 </GridView>
             </ListView.View>
         </ListView>
@@ -30,19 +31,63 @@
 
             <ListView.View>
                 <GridView>
-                    <GridViewColumn Header="Name" Width="120" DisplayMemberBinding="{Binding MenuItem.Name}" />
-                    <GridViewColumn Header="Price" Width="50" DisplayMemberBinding="{Binding MenuItem.Price}" />
+                    <GridViewColumn Header="Name" Width="120" DisplayMemberBinding="{Binding Name}" />
+                    <GridViewColumn Header="Price" Width="50" DisplayMemberBinding="{Binding Price}" />
                     <GridViewColumn Header="Quantity" Width="50" DisplayMemberBinding="{Binding Quantity}" />
+                    <GridViewColumn Header="" Width="50" >
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <Button x:Name="minusBtn" Content="-" Click="Minus_OnClick"/>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                    <GridViewColumn Header="" Width="50" >
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <Button x:Name="plusBtn" Content="+" Click="Plus_OnClick"/>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
                 </GridView>
+                
             </ListView.View>
         </ListView>
-        <Button Content="Add Position" Margin="19,26,270,75" Grid.Row="2" Click="Button_Click"/>
-        <TextBlock Text="Payment Method"  Grid.Column="1" Grid.Row="1" Margin="150,230,0,25" Grid.RowSpan="2" ></TextBlock>
-        <ComboBox Width="120" Grid.Column="1" Margin="255,10,25,94" Grid.Row="2" Name="Payment">
-            <ComboBoxItem Content="Cash" />
-            <ComboBoxItem Content="Card" />
-        </ComboBox>
-        <Button Content="Place order" Margin="255,76,34,25" Grid.Row="2" Click="Button_Click_1" Grid.Column="1"/>
+        <Grid Grid.Row="2" Grid.Column="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition />
+                <RowDefinition />
+                <RowDefinition />
+            </Grid.RowDefinitions>
+            <TextBlock Text="Payment Method"  Grid.Column="0" Grid.Row="0" VerticalAlignment="Center" HorizontalAlignment="Center" />
+            <TextBlock Text="Local or Take Away?"  Grid.Column="0" Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Center" />
+            <ComboBox x:Name="paymentCombo" Width="120" Grid.Column="1"  VerticalAlignment="Center" HorizontalAlignment="Center" Grid.Row="0" />
+            <ComboBox x:Name="orderFormCombo" Width="120" Grid.Column="1"  VerticalAlignment="Center" HorizontalAlignment="Center" Grid.Row="1" />
+
+            <Button Name="placeOrderBtn" Content="Place order"  VerticalAlignment="Center" HorizontalAlignment="Center" Grid.Row="2" Click="Button_Click_1" Grid.Column="1">
+                <Button.Style>
+                    <Style TargetType="{x:Type Button}">
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding ElementName=paymentCombo, Path=SelectedItem, Mode=OneWay}" Value="{x:Null}">
+                                <Setter Property="IsEnabled" Value="False"/>
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding ElementName=orderFormCombo, Path=SelectedItem, Mode=OneWay}" Value="{x:Null}">
+                                <Setter Property="IsEnabled" Value="False" />
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding ElementName=order, Path=Items.Count, Mode=OneWay}" Value="0">
+                                <Setter Property="IsEnabled" Value="False" />
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Button.Style>
+            </Button>
+        </Grid>
+        <Button Name="addPosBtn" Content="Add Position" Margin="19,26,270,75" Grid.Row="2" Click="Button_Click" >
+
+        </Button>
 
     </Grid>
 </UserControl>

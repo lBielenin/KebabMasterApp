@@ -1,21 +1,15 @@
-﻿using KebabCore.Entities.Orders;
+﻿using KebabApplication.DTO;
+using KebabCore.DomainModels.Orders;
+using KebabCore.Enums;
+using KebabCore.Models.Orders;
+using KebabCore.Views;
 using KebabInfrastructure;
-using KebabMasterApp.Dtos;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace KebabMasterApp
 {
@@ -24,20 +18,22 @@ namespace KebabMasterApp
     /// </summary>
     public partial class OrderContentControl : UserControl
     {
-        public List<KebabCore.Entities.Menu.MenuItem> Menu;
-        public ObservableCollection<OrderItemDto> Order =
-            new ObservableCollection<OrderItemDto>();
+        public List<MenuView> Menu;
+        public ObservableCollection<OrderItemDTO> Order =
+            new ObservableCollection<OrderItemDTO>();
 
         public OrderContentControl()
         {
             InitializeComponent();
-            InitializeComponent();
 
             var repo = new MenuService();
+            Menu = repo.GetNewestMenu();
 
-            Menu = repo.GetNewest();
             menu.ItemsSource = Menu;
             order.ItemsSource = Order;
+
+            paymentCombo.ItemsSource = Enum.GetValues(typeof(PaymentForm));
+            orderFormCombo.ItemsSource = Enum.GetValues(typeof(OrderForm));
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
@@ -46,30 +42,59 @@ namespace KebabMasterApp
             if (index == -1)
                 return;
             var itemToAdd = Menu[index];
-            var itemToUpdate = Order.FirstOrDefault(o => o.MenuItem.MenuItemId == itemToAdd.MenuItemId);
+            var itemToUpdate = Order.FirstOrDefault(o => o.MenuItemId == itemToAdd.MenuItemId);
 
             if (itemToUpdate != null)
             {
-                Order.Remove(itemToUpdate);
                 itemToUpdate.Quantity++;
-                Order.Add(itemToUpdate);
                 return;
             }
 
-            Order.Add(new OrderItemDto { MenuItem = Menu[index] });
+            Order.Add(new OrderItemDTO { 
+                Category = itemToAdd.ItemCategory, Description = itemToAdd.ItemDescription, 
+                ItemId = itemToAdd.ItemId, MenuId = itemToAdd.MenuId, 
+                MenuItemId = itemToAdd.MenuItemId, Name = itemToAdd.ItemName, 
+                Price = itemToAdd.ItemPrice, Quantity = 1 });
 
 
+        }
+        
+        private void Minus_OnClick(object sender, RoutedEventArgs e)
+        {
+            var btn = (Button)sender;
+            var ctx = (OrderItemDTO)btn.DataContext;
+
+            if (ctx.Quantity > 1)
+                ctx.Quantity--;
+            else
+                Order.Remove(ctx);
+        }
+
+        private void Plus_OnClick(object sender, RoutedEventArgs e)
+        {
+            var btn = (Button)sender;
+            var ctx = (OrderItemDTO)btn.DataContext;
+            ctx.Quantity++;
         }
 
         private void Button_Click_1(object sender, RoutedEventArgs e)
         {
+            var payment = paymentCombo.SelectedItem;
+            var form = orderFormCombo.SelectedItem;
+            if (!Order.Any())
+            {
+
+            }
             var order = new Order()
             {
                 OrderId = Guid.NewGuid(),
                 OrderItem = this.Order.Select(o => new OrderItem { MenuItemId = o.MenuItemId, OrderItemId = Guid.NewGuid() }).ToList(),
-                PaymentMethod = (int)PaymentForm.Cash
-                //StatusId = (int)Statuses.NotStarted
+                PaymentMethod = (int)payment,
+                OrderForm = (int)form,
+                StatusId = (int)Status.NotStarted
             };
+            addPosBtn.IsEnabled = false;
+            placeOrderBtn.IsEnabled = false;
 
             new OrdersService().PlaceOrder(order);
 
