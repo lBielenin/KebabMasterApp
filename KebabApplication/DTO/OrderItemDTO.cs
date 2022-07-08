@@ -1,16 +1,36 @@
-﻿using KebabCore.DomainModels.Menu;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using KebabCore.Enums;
+using System.ComponentModel;
 
 namespace KebabApplication.DTO
 {
-    public class OrderItemDTO
+    public class OrderItemDTO : INotifyPropertyChanged
     {
-        public MenuItem MenuItem { get; set; }
+        public Guid MenuItemId { get; set; }
+        public Guid MenuId { get; set; }
+        public Guid ItemId { get; set; }
+        public decimal Price { get; set; }
+        private byte quantity = 1;
+        public byte Quantity
+        {
+            get => quantity;
+            set
+            {
+                quantity = value;
+                OnPropertyRaised("Quantity");
+            }
+        }
+        public string Name { get; set; }
+        public Category Category { get; set; }
+        public string Description { get; set; }
 
-        public byte Quantity { get; set; } = 1;
+        public event PropertyChangedEventHandler? PropertyChanged;
+
+        private void OnPropertyRaised(string propertyname)
+        {
+            if (PropertyChanged != null)
+            {
+                PropertyChanged(this, new PropertyChangedEventArgs(propertyname));
+            }
+        }
     }
 }
