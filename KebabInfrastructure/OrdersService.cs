@@ -1,4 +1,4 @@
-﻿using KebabCore.Entities.Orders;
+﻿using KebabCore.DomainModels.Orders;
 using KebabInfrastructure.Context;
 using System;
 using System.Collections.Generic;

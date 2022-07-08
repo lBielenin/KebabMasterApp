@@ -1,7 +1,9 @@
-﻿using KebabCore.Entities.Menu;
+﻿using KebabCore.DomainModels.Menu;
+using KebabCore.Views;
 using KebabInfrastructure.Context;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -21,17 +23,21 @@ namespace KebabInfrastructure
             }
         }
 
-        public List<MenuItem> GetNewest()
+        public List<MenuView> GetNewestMenu()
         {
-            List<MenuItem> items;
+            using (var context = new KebabMenuDbContext())
+            {
+                var id = GetNewestMenuId(context);
+                return context.MenuView.Where(v => v.MenuId == id).ToList();
 
-            Guid menuId = DbContext.Menus.OrderByDescending(m => m.CreationDate).First().MenuId;
-            items = DbContext.MenuItems.Where(i => i.MenuId == menuId).ToList();
-
-            
-            return items;
+            }
         }
 
+        private Guid GetNewestMenuId(KebabMenuDbContext context)
+        {
+            return context.Menus
+                .OrderByDescending(m => m.CreationDate).First().MenuId;
+        }
 
         public void Dispose()
         {
