@@ -2,7 +2,7 @@
 {
     public enum OrderForm
     {
-        TakeOut,
-        Local
+        TakeOut = 1,
+        Local = 2
     }
 }

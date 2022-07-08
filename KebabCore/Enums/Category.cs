@@ -2,9 +2,9 @@
 {
     public enum Category
     {
-        Kebab,
-        Side, 
-        Beverage,
-        Salad
+        Kebabs = 1,
+        Sides = 2, 
+        Beverages = 3,
+        Salads = 4
     }
 }

@@ -2,8 +2,8 @@
 {
     public enum Sauce
     {
-        Hot,
-        Mixed,
-        Mild
+        Hot = 1,
+        Mixed = 2,
+        Mild = 3
     }
 }
