@@ -7,7 +7,7 @@ namespace KebabCore.DomainModels.Menu
         [Key]
         public Guid MenuId { get; set; }
         public DateTime CreationDate { get; set; }
-        public List<MenuItem> MenuItems { get; set; }
+        public virtual List<MenuItem> MenuItems { get; set; }
 
         public Menu()
         {

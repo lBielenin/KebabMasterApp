@@ -1,18 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using KebabCore.Enums;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace KebabCore.DomainModels.Menu
 {
     public class Item
     {
         [Key]
-        public Guid ItemId { get; init; }
-        public string Name { get; init; }
-        public string Ingredients { get; init; }
+        public Guid ItemId { get; set; }
+        public string Name { get; set; }
+        [Column("CategoryId")]
+        public Category Category { get; set; }
+        public string Description { get; set; }
+        public List<MenuItem> MenuItems { get; set; }
     }
 }
