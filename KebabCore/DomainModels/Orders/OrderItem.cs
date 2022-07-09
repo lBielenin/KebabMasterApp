@@ -10,6 +10,5 @@ namespace KebabCore.Models.Orders
         public int StatusId { get; init; } = 1;
 
         public byte Quantity { get; set; } = 1;
-        public string? Comment { get; set; }
     }
 }

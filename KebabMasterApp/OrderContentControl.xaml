@@ -16,7 +16,7 @@
             <RowDefinition Height="219*" />
             <RowDefinition Height="129*" />
         </Grid.RowDefinitions>
-        <TextBlock FontSize="50" Text="Test"/>
+        <TextBlock FontSize="50" Text="Menu"/>
         <ListView x:Name="menu" Grid.Column="0" Grid.Row="1" Margin="0,39,0,0" >
 
             <ListView.View>
@@ -88,6 +88,21 @@
         <Button Name="addPosBtn" Content="Add Position" Margin="19,26,270,75" Grid.Row="2" Click="Button_Click" >
 
         </Button>
-
+        <Popup   Name="finishPopup" HorizontalAlignment="Center" VerticalAlignment="Center"  
+            Width="250" Height="150" IsOpen="False" PlacementTarget="{Binding ElementName=OrderContentControl}"
+    Placement="Center" AllowsTransparency="True" >
+            <Grid Background="WhiteSmoke">
+                <Grid.RowDefinitions>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+                <TextBlock  Text="Your Order was sent! " Grid.Row="0" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                <TextBlock  Text="Your order number is:" Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" Name="textBoxOrderNumber"  Grid.Row="2"/>
+                <Button Grid.Row="3" Content="OK" Margin="5" Click="PopUp_Button_Confirm"/>
+            </Grid>
+        </Popup>
     </Grid>
 </UserControl>

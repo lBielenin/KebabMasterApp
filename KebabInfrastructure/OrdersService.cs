@@ -21,11 +21,14 @@ namespace KebabInfrastructure
             }
         }
 
-        public void PlaceOrder(Order order)
+        public int PlaceOrderReturnValue(Order order)
         {
             DbContext.Orders.Add(order);
             DbContext.SaveChanges();
+
+            return DbContext.GetOrderNumberById(order.OrderId);
         }
+
         public void Dispose()
         {
             throw new NotImplementedException();

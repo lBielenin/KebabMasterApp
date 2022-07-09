@@ -22,6 +22,8 @@ namespace KebabMasterApp
         public ObservableCollection<OrderItemDTO> Order =
             new ObservableCollection<OrderItemDTO>();
 
+        public int NewOrderNumber = 0;
+
         public OrderContentControl()
         {
             InitializeComponent();
@@ -34,6 +36,7 @@ namespace KebabMasterApp
 
             paymentCombo.ItemsSource = Enum.GetValues(typeof(PaymentForm));
             orderFormCombo.ItemsSource = Enum.GetValues(typeof(OrderForm));
+
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
@@ -81,10 +84,7 @@ namespace KebabMasterApp
         {
             var payment = paymentCombo.SelectedItem;
             var form = orderFormCombo.SelectedItem;
-            if (!Order.Any())
-            {
 
-            }
             var order = new Order()
             {
                 OrderId = Guid.NewGuid(),
@@ -96,8 +96,19 @@ namespace KebabMasterApp
             addPosBtn.IsEnabled = false;
             placeOrderBtn.IsEnabled = false;
 
-            new OrdersService().PlaceOrder(order);
+            var orderNumber = new OrdersService().PlaceOrderReturnValue(order);
+            NewOrderNumber = orderNumber;
+            textBoxOrderNumber.Text = orderNumber.ToString();
+            finishPopup.IsOpen = true;
+        }
 
+
+        private void PopUp_Button_Confirm(object sender, RoutedEventArgs e)
+        {
+            finishPopup.IsEnabled = false;
+            finishPopup.IsOpen = false;
+            MainWindow parentWindow = (MainWindow)Window.GetWindow(this);
+            parentWindow.ChangeContentToStarter();
         }
     }
 }

@@ -19,5 +19,10 @@ namespace KebabMasterApp
             ContentArea.Content = new OrderContentControl();
 
         }
+
+        public void ChangeContentToStarter()
+        {
+            ContentArea.Content = new StarterControl();
+        }
     }
 }
