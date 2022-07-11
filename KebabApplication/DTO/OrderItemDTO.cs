@@ -1,36 +1,16 @@
 ﻿using KebabCore.Enums;
-using System.ComponentModel;
 
 namespace KebabApplication.DTO
 {
-    public class OrderItemDTO : INotifyPropertyChanged
+    public class OrderItemDTO
     {
-        public Guid MenuItemId { get; set; }
-        public Guid MenuId { get; set; }
-        public Guid ItemId { get; set; }
-        public decimal Price { get; set; }
-        private byte quantity = 1;
-        public byte Quantity
-        {
-            get => quantity;
-            set
-            {
-                quantity = value;
-                OnPropertyRaised("Quantity");
-            }
-        }
         public string Name { get; set; }
+        public int Quantity { get; set; }
         public Category Category { get; set; }
-        public string Description { get; set; }
 
-        public event PropertyChangedEventHandler? PropertyChanged;
-
-        private void OnPropertyRaised(string propertyname)
+        public override string ToString()
         {
-            if (PropertyChanged != null)
-            {
-                PropertyChanged(this, new PropertyChangedEventArgs(propertyname));
-            }
+            return $"{Name} {Quantity} {Category}";
         }
     }
 }

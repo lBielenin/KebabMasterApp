@@ -11,13 +11,35 @@
             <ColumnDefinition />
             <ColumnDefinition />
         </Grid.ColumnDefinitions>
-        <ListView x:Name="menu" Grid.Column="0" Grid.Row="1" Margin="0,39,0,0" >
-            <ListView.View>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="4*"/>
+            <RowDefinition Height="1*"/>
+        </Grid.RowDefinitions>
+        <Button Grid.Column="0" Grid.Row="2" VerticalAlignment="Center" HorizontalAlignment="Center" Content="Update Status"  Name="upStatusBtn" IsEnabled="{Binding IsLoggedIn}" Click="Button_Click">
+            <Button.Style>
+                <Style>
+                    <Style.Triggers>
+                        <DataTrigger 
+                     Binding ="{Binding ElementName=orderList, Path=SelectedIndex}" Value="-1">
+                            <Setter Property="Button.IsEnabled" Value="false"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </Button.Style>
+        </Button>
+        <ListView x:Name="orderList" Grid.Column="0" Grid.Row="1" SelectionChanged="ListBox_SelectionChanged" Margin="10 10 10 10" BorderThickness="1" BorderBrush="Black">
+            <ListView.View >
                 <GridView>
-                    <GridViewColumn Header="Number" Width="120" DisplayMemberBinding="{Binding Name}" />
-                    <GridViewColumn Header="Price" Width="50" DisplayMemberBinding="{Binding Price}" />
+                    <GridViewColumn Header="Time"  DisplayMemberBinding="{Binding CreationDate}" />
+                    <GridViewColumn Header="Number"  DisplayMemberBinding="{Binding OrderNumber}" />
+                    <GridViewColumn Header="Status"  DisplayMemberBinding="{Binding Status}" />
                 </GridView>
             </ListView.View>
         </ListView>
+        <Border BorderBrush="Black" BorderThickness="1" Grid.Row="1" Grid.Column="1" Margin="10 10 10 10" >
+            <TextBlock  Text="Test" Name="orderDetailsTextBlock" TextAlignment="Center"></TextBlock>
+
+        </Border>
     </Grid>
 </UserControl>

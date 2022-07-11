@@ -9,6 +9,7 @@ namespace KebabCore.DomainModels.Orders
         public int OrderForm { get; init; }
         public int StatusId { get; init; }
         public string? Comment { get; set; }
+        public DateTime CreationDate { get; set; }
         public List<OrderItem> OrderItem { get; init; }
     }
 }

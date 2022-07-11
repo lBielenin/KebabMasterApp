@@ -1,6 +1,7 @@
 ﻿using KebabCore.DomainModels.Menu;
 using KebabCore.DomainModels.Orders;
-using KebabCore.Views;
+using KebabCore.Models.Orders;
+using KebabInfrastructure.Views;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 
@@ -13,14 +14,15 @@ namespace KebabInfrastructure.Context
         public DbSet<Item> Items { get; set; }
 
         public DbSet<Order> Orders { get; set; }
-        public DbSet<OrderIdNumber> OrderIdNumbers { get; set; }
+        public DbSet<OrderItem> OrderItem { get; set; }
         public DbSet<MenuView> MenuView { get; set; }
+        public DbSet<OrderView> OrderView { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             
             optionsBuilder.UseSqlServer(
-                @"Data Source=DESKTOP-AH54VTK;Initial Catalog=KebabDB;Integrated Security=True");
+                @"Data Source=localhost;Initial Catalog=KebabDB;Integrated Security=True");
         }
 
         public int GetOrderNumberById(Guid orderId)
@@ -43,7 +45,6 @@ namespace KebabInfrastructure.Context
                 }
                 finally
                 {
-                    // Always call Close when done reading.
                     reader.Close();
                 }
 
@@ -55,13 +56,11 @@ namespace KebabInfrastructure.Context
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<MenuView>().HasNoKey();
-            modelBuilder.Entity<OrderIdNumber>().HasNoKey();
+            modelBuilder.Entity<OrderView>().HasNoKey();
 
             modelBuilder.Entity<MenuItem>().HasKey(mi => new { mi.MenuId, mi.ItemId });
             modelBuilder.Entity<MenuItem>().HasOne<Menu>().WithMany(m => m.MenuItems).HasForeignKey(e => e.MenuId).IsRequired();
-            modelBuilder.Entity<MenuItem>().HasOne<Item>().WithMany(m => m.MenuItems).HasForeignKey(e => e.MenuItemId).IsRequired();
-            //modelBuilder
-            //    .HasOne<Item>().WithMany(i => i.MenuItems);
+
             modelBuilder
                 .Entity<Item>()
                 .Property(e => e.Category)
@@ -72,6 +71,34 @@ namespace KebabInfrastructure.Context
                 .Property(v => v.ItemCategory)
                 .HasConversion<string>();
 
+            modelBuilder
+                .Entity<OrderView>()
+                .Property(v => v.OrderForm)
+                .HasConversion<string>();
+
+            modelBuilder
+                .Entity<OrderView>()
+                .Property(v => v.StatusName)
+                .HasConversion<string>();
+
+            modelBuilder
+                .Entity<OrderView>()
+                .Property(v => v.PaymentForm)
+                .HasConversion<string>();
+
+            modelBuilder
+                .Entity<OrderView>()
+                .Property(v => v.CategoryName)
+                .HasConversion<string>();
+
+
+
+            //                public Category CategoryName { get; set; }
+            //public int OrderNumber { get; set; }
+            //public int Quantity { get; set; }
+            //public Status StatusName { get; set; }
+            //public PaymentForm PaymentForm { get; set; }
+            //public OrderForm OrderForm { get; set; }
         }
     }
 }

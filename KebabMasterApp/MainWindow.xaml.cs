@@ -1,4 +1,6 @@
-﻿using System.Windows;
+﻿using KebabMasterApp.ContentStrategy;
+using System;
+using System.Windows;
 
 namespace KebabMasterApp
 {
@@ -10,8 +12,10 @@ namespace KebabMasterApp
         public MainWindow()
         {
             InitializeComponent();
+            var context = new DisplayStrategyContext();
+            var strategy = context.GetStrategyFromCommandArgs();
 
-            ContentArea.Content = new StarterControl();
+            strategy.DisplayContent(ContentArea);
         }
 
         public void ChangeContent()

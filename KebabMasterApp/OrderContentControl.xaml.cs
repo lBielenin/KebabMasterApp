@@ -1,9 +1,10 @@
 ﻿using KebabApplication.DTO;
+using KebabApplication.Services;
 using KebabCore.DomainModels.Orders;
 using KebabCore.Enums;
 using KebabCore.Models.Orders;
-using KebabCore.Views;
 using KebabInfrastructure;
+using KebabInfrastructure.Views;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -19,8 +20,8 @@ namespace KebabMasterApp
     public partial class OrderContentControl : UserControl
     {
         public List<MenuView> Menu;
-        public ObservableCollection<OrderItemDTO> Order =
-            new ObservableCollection<OrderItemDTO>();
+        public ObservableCollection<OrderMenuItemDTO> Order =
+            new ObservableCollection<OrderMenuItemDTO>();
 
         public int NewOrderNumber = 0;
 
@@ -53,7 +54,7 @@ namespace KebabMasterApp
                 return;
             }
 
-            Order.Add(new OrderItemDTO { 
+            Order.Add(new OrderMenuItemDTO { 
                 Category = itemToAdd.ItemCategory, Description = itemToAdd.ItemDescription, 
                 ItemId = itemToAdd.ItemId, MenuId = itemToAdd.MenuId, 
                 MenuItemId = itemToAdd.MenuItemId, Name = itemToAdd.ItemName, 
@@ -65,7 +66,7 @@ namespace KebabMasterApp
         private void Minus_OnClick(object sender, RoutedEventArgs e)
         {
             var btn = (Button)sender;
-            var ctx = (OrderItemDTO)btn.DataContext;
+            var ctx = (OrderMenuItemDTO)btn.DataContext;
 
             if (ctx.Quantity > 1)
                 ctx.Quantity--;
@@ -76,7 +77,7 @@ namespace KebabMasterApp
         private void Plus_OnClick(object sender, RoutedEventArgs e)
         {
             var btn = (Button)sender;
-            var ctx = (OrderItemDTO)btn.DataContext;
+            var ctx = (OrderMenuItemDTO)btn.DataContext;
             ctx.Quantity++;
         }
 
@@ -88,10 +89,11 @@ namespace KebabMasterApp
             var order = new Order()
             {
                 OrderId = Guid.NewGuid(),
-                OrderItem = this.Order.Select(o => new OrderItem { MenuItemId = o.MenuItemId, OrderItemId = Guid.NewGuid() }).ToList(),
+                OrderItem = this.Order.Select(o => new OrderItem { MenuItemId = o.MenuItemId, OrderItemId = Guid.NewGuid(), Quantity = o.Quantity }).ToList(),
                 PaymentMethod = (int)payment,
                 OrderForm = (int)form,
-                StatusId = (int)Status.NotStarted
+                StatusId = (int)Status.Added,
+                CreationDate = DateTime.Now
             };
             addPosBtn.IsEnabled = false;
             placeOrderBtn.IsEnabled = false;

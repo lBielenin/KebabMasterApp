@@ -1,6 +1,6 @@
 ﻿using KebabCore.Enums;
 
-namespace KebabCore.Views
+namespace KebabInfrastructure.Views
 {
     public class MenuView
     {

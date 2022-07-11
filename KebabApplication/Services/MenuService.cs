@@ -1,6 +1,6 @@
 ﻿using KebabCore.DomainModels.Menu;
-using KebabCore.Views;
 using KebabInfrastructure.Context;
+using KebabInfrastructure.Views;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
@@ -8,7 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace KebabInfrastructure
+namespace KebabApplication.Services
 {
     public class MenuService : IDisposable
     {

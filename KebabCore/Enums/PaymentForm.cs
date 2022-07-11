@@ -2,7 +2,7 @@
 {
     public enum PaymentForm
     {
-        Cash = 1,
-        Card = 2
+        Cash,
+        Card
     }
 }

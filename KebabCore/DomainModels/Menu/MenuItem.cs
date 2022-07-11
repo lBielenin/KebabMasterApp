@@ -9,7 +9,6 @@ namespace KebabCore.DomainModels.Menu
         public Guid MenuItemId { get; set; }
         public Guid MenuId { get; set; }
         public Guid ItemId { get; set; }
-        public virtual Item Item { get; set; }
         public decimal Price { get; set; }
     }
 }
