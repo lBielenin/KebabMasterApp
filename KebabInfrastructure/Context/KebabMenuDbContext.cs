@@ -30,7 +30,7 @@ namespace KebabInfrastructure.Context
             object value = new object();
             string queryString = "SELECT TOP 1 [OrderNumber] FROM [dbo].[Orders]WHERE OrderId = @orderId";
 
-            using (var conn = new SqlConnection(@"Data Source=DESKTOP-AH54VTK;Initial Catalog=KebabDB;Integrated Security=True"))
+            using (var conn = new SqlConnection(@"Data Source=localhost;Initial Catalog=KebabDB;Integrated Security=True"))
             {
                 SqlCommand command = new SqlCommand(queryString, conn);
                 command.Parameters.AddWithValue("@orderId", orderId);
