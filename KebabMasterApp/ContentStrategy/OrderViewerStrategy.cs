@@ -7,7 +7,7 @@ namespace KebabMasterApp.ContentStrategy
     {
         public void DisplayContent(ContentControl contentRef)
         {
-            throw new NotImplementedException();
+            contentRef.Content = new OrderViewerControl();
         }
     }
 }

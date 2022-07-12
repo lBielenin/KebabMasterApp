@@ -21,11 +21,19 @@
 
             <ListView.View>
                 <GridView>
-                    <GridViewColumn Header="Category" Width="120" DisplayMemberBinding="{Binding ItemCategory}" />
-                    <GridViewColumn Header="Name" Width="120" DisplayMemberBinding="{Binding ItemName}" />
-                    <GridViewColumn Header="Price" Width="50" DisplayMemberBinding="{Binding ItemPrice}" />
+                    <GridViewColumn Header="Name" DisplayMemberBinding="{Binding ItemName}" />
+                    <GridViewColumn Header="Price" DisplayMemberBinding="{Binding ItemPrice}" />
                 </GridView>
             </ListView.View>
+            <ListView.GroupStyle>
+                <GroupStyle>
+                    <GroupStyle.HeaderTemplate>
+                        <DataTemplate>
+                            <TextBlock FontWeight="Bold" FontSize="14" Text="{Binding Name}"/>
+                        </DataTemplate>
+                    </GroupStyle.HeaderTemplate>
+                </GroupStyle>
+            </ListView.GroupStyle>
         </ListView>
         <ListView x:Name="order" Grid.Column="1" Grid.Row="1" Margin="15,15,15,15" >
 

@@ -4,6 +4,7 @@ using KebabCore.DomainModels.Orders;
 using KebabCore.Enums;
 using KebabCore.Models.Orders;
 using KebabInfrastructure;
+using KebabInfrastructure.DatabaseMonitor;
 using KebabInfrastructure.Views;
 using System;
 using System.Collections.Generic;
@@ -11,6 +12,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Data;
 
 namespace KebabMasterApp
 {
@@ -28,16 +30,18 @@ namespace KebabMasterApp
         public OrderContentControl()
         {
             InitializeComponent();
-
             var repo = new MenuService();
             Menu = repo.GetNewestMenu();
 
             menu.ItemsSource = Menu;
             order.ItemsSource = Order;
-
             paymentCombo.ItemsSource = Enum.GetValues(typeof(PaymentForm));
             orderFormCombo.ItemsSource = Enum.GetValues(typeof(OrderForm));
 
+            CollectionView view = (CollectionView)CollectionViewSource.GetDefaultView(menu.ItemsSource);
+
+            PropertyGroupDescription groupDescription = new PropertyGroupDescription("ItemCategory");
+            view.GroupDescriptions.Add(groupDescription);
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)

@@ -7,6 +7,34 @@
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid>
-            
+        <Grid.RowDefinitions>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="4*"/>
+            <RowDefinition Height="1*"/>
+        </Grid.RowDefinitions>
+        <ListView x:Name="orderList" Grid.Row="1" Margin="10 10 10 10" BorderThickness="1" BorderBrush="Black" HorizontalAlignment="Center" MinWidth="300">
+            <ListView.View >
+                <GridView>
+                    <GridViewColumn Header="Number"  DisplayMemberBinding="{Binding OrderNumber}" />
+                    <GridViewColumn Header="Status"  DisplayMemberBinding="{Binding Status}" />
+                </GridView>
+            </ListView.View>
+            <ListView.ItemContainerStyle>
+                <Style TargetType="ListViewItem">
+                    <Setter Property="IsEnabled" Value="False"/>
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding Path=Status}" Value="Added">
+                            <Setter Property="Background" Value="LightBlue" />
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding Path=Status}" Value="InProgress">
+                            <Setter Property="Background" Value="LightYellow" />
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding Path=Status}" Value="Completed">
+                            <Setter Property="Background" Value="LightGreen" />
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </ListView.ItemContainerStyle>
+        </ListView>
     </Grid>
 </UserControl>
