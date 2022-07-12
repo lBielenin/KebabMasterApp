@@ -1,5 +1,6 @@
 ﻿using KebabApplication.DTO;
 using KebabCore.DomainModels.Orders;
+using KebabCore.Enums;
 using KebabInfrastructure.Context;
 using System.Data.Entity;
 
@@ -23,25 +24,7 @@ namespace KebabApplication.Services
             List<KebabInfrastructure.Views.OrderView>? views = DbContext.OrderView
                 .Where(o => o.OrderCreationDate.Date == DateTime.Now.Date)
                 .OrderByDescending(o => o.OrderCreationDate).ToList();
-
-            List<OrderDTO>? test = views.GroupBy(v => v.OrderId)
-                .Select(g => new OrderDTO
-                {
-                    CreationDate = g.First().OrderCreationDate,
-                    OrderForm = g.First().OrderForm,
-                    OrderId = g.First().OrderId,
-                    PaymentFrom = g.First().PaymentForm,
-                    Status = g.First().StatusName,
-                    OrderNumber = g.First().OrderNumber,
-                    OrderItems = g.Select(k => new OrderItemDTO
-                    {
-                        Category = k.CategoryName,
-                        Name = k.Name,
-                        Quantity = k.Quantity
-                    }).ToList()
-                }).ToList();
-
-            return test;
+            return Mapper.Mapper.MapOrderViewsToOrders(views);
         }
 
         public int PlaceOrderReturnValue(Order order)
@@ -50,6 +33,14 @@ namespace KebabApplication.Services
             DbContext.SaveChanges();
 
             return DbContext.GetOrderNumberById(order.OrderId);
+        }
+        public void UpdateOrderStatus(Guid orderId, Status status)
+        {
+            var order = DbContext.Orders.First(o => o.OrderId == orderId);
+            order.StatusId = (int)status;
+            DbContext.Update(order);
+            DbContext.SaveChanges();
+
         }
 
         public void RemoveOrder(Guid orderId)

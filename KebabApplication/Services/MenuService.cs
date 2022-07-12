@@ -28,7 +28,10 @@ namespace KebabApplication.Services
             using (var context = new KebabMenuDbContext())
             {
                 var id = GetNewestMenuId(context);
-                return context.MenuView.Where(v => v.MenuId == id).ToList();
+                var menu = context.MenuView.Where(v => v.MenuId == id).ToList();
+                menu.Sort((MenuView vp, MenuView vn) => ((int)vp.ItemCategory).CompareTo((int)vn.ItemCategory));
+
+                return menu;
 
             }
         }
