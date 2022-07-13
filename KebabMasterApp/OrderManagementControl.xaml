@@ -16,6 +16,8 @@
             <RowDefinition Height="4*"/>
             <RowDefinition Height="1*"/>
         </Grid.RowDefinitions>
+        <TextBlock  Margin="10 0 0 0" TextWrapping="Wrap" Grid.Row="0" Grid.Column="0" FontSize="30" Text="KebabMaster Order Manager"/>
+
         <Button Grid.Column="0" Grid.Row="2" VerticalAlignment="Center" HorizontalAlignment="Center" Content="Update Status"  Name="upStatusBtn" IsEnabled="{Binding IsLoggedIn}" Click="Button_Click">
             <Button.Style>
                 <Style>
@@ -31,15 +33,14 @@
         <ListView x:Name="orderList" Grid.Column="0" Grid.Row="1" SelectionChanged="ListBox_SelectionChanged" Margin="10 10 10 10" BorderThickness="1" BorderBrush="Black">
             <ListView.View >
                 <GridView>
-                    <GridViewColumn Header="Time"  DisplayMemberBinding="{Binding CreationDate}" />
-                    <GridViewColumn Header="Number"  DisplayMemberBinding="{Binding OrderNumber}" />
-                    <GridViewColumn Header="Status"  DisplayMemberBinding="{Binding Status}" />
+                    <GridViewColumn Width="100" Header="Time"  DisplayMemberBinding="{Binding CreationDate}" />
+                    <GridViewColumn Width="100" Header="Number"  DisplayMemberBinding="{Binding OrderNumber}" />
+                    <GridViewColumn Width="100" Header="Status"  DisplayMemberBinding="{Binding Status}" />
                 </GridView>
             </ListView.View>
         </ListView>
         <Border BorderBrush="Black" BorderThickness="1" Grid.Row="1" Grid.Column="1" Margin="10 10 10 10" >
-            <TextBlock  Text="Test" Name="orderDetailsTextBlock" TextAlignment="Center"></TextBlock>
-
+            <TextBox VerticalContentAlignment="Center" Name="orderDetailsTextBlock"  TextAlignment="Center"></TextBox>
         </Border>
     </Grid>
 </UserControl>

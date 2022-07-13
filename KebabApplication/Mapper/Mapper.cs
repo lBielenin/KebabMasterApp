@@ -24,5 +24,20 @@ namespace KebabApplication.Mapper
                     }).ToList()
                 }).ToList();
         }
+
+        public static OrderMenuItemDTO MapMenuViewToOrderMenuItemOrderDTO(MenuView menuView)
+        {
+            return new OrderMenuItemDTO
+            {
+                Category = menuView.ItemCategory,
+                Description = menuView.ItemDescription,
+                ItemId = menuView.ItemId,
+                MenuId = menuView.MenuId,
+                MenuItemId = menuView.MenuItemId,
+                Name = menuView.ItemName,
+                Price = menuView.ItemPrice,
+                Quantity = 1
+            };
+        }
     }
 }

@@ -1,9 +1,21 @@
-﻿using System;
+﻿using KebabApplication.DatabaseMonitor;
+using KebabApplication.Services.Contracts;
+using Microsoft.Extensions.DependencyInjection;
+using Serilog.Core;
+using System;
 
 namespace KebabMasterApp.ContentStrategy
 {
-    internal class DisplayStrategyContext
+    internal class DisplayStrategyContext : IDisplayStrategyContext
     {
+        private readonly IServiceProvider serviceProvider;
+
+        public DisplayStrategyContext(
+            IServiceProvider serviceProvider)
+        {
+            this.serviceProvider = serviceProvider;
+        }
+
         public IStrategy GetStrategyFromCommandArgs()
         {
             string[]? args = Environment.GetCommandLineArgs();
@@ -23,9 +35,9 @@ namespace KebabMasterApp.ContentStrategy
             switch (lastArg)
             {
                 case "-management":
-                    return new OrderManagementStrategy();
+                    return new OrderManagementStrategy(serviceProvider.GetService<IOrderService>(), serviceProvider.GetService<IDatabaseMonitor>(), serviceProvider.GetService<Logger>());
                 case "-view":
-                    return new OrderViewerStrategy();
+                    return new OrderViewerStrategy(serviceProvider.GetService<IOrderService>(), serviceProvider.GetService<IDatabaseMonitor>(), serviceProvider.GetService<Logger>());
                 default:
                     return new MenuStrategy();
             }

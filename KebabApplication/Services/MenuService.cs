@@ -1,42 +1,31 @@
-﻿using KebabCore.DomainModels.Menu;
+﻿using KebabApplication.Services.Contracts;
 using KebabInfrastructure.Context;
 using KebabInfrastructure.Views;
-using System;
-using System.Collections.Generic;
-using System.Data.Entity;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace KebabApplication.Services
 {
-    public class MenuService : IDisposable
+    public class MenuService : IDisposable, IMenuService
     {
-        private KebabMenuDbContext dbContext;
-        private KebabMenuDbContext DbContext
+        private KebabDbContext dbContext;
+
+        public MenuService(KebabDbContext context)
         {
-            get
-            {
-                if (dbContext is null)
-                    dbContext = new KebabMenuDbContext();
-                return dbContext;
-            }
+            dbContext = context;
         }
 
         public List<MenuView> GetNewestMenu()
         {
-            using (var context = new KebabMenuDbContext())
-            {
-                var id = GetNewestMenuId(context);
-                var menu = context.MenuView.Where(v => v.MenuId == id).ToList();
-                menu.Sort((MenuView vp, MenuView vn) => ((int)vp.ItemCategory).CompareTo((int)vn.ItemCategory));
 
-                return menu;
+            var id = GetNewestMenuId(dbContext);
+            var menu = dbContext.MenuView.Where(v => v.MenuId == id).ToList();
+            menu.Sort((MenuView vp, MenuView vn) => ((int)vp.ItemCategory).CompareTo((int)vn.ItemCategory));
+            return menu;
 
-            }
+
+
         }
 
-        private Guid GetNewestMenuId(KebabMenuDbContext context)
+        private Guid GetNewestMenuId(KebabDbContext context)
         {
             return context.Menus
                 .OrderByDescending(m => m.CreationDate).First().MenuId;

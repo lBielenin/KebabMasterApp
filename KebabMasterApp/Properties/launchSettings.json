@@ -1,7 +1,8 @@
 {
   "profiles": {
     "KebabMasterApp": {
-      "commandName": "Project"
+      "commandName": "Project",
+      "commandLineArgs": "-management"
     }
   }
 }

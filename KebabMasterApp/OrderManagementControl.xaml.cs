@@ -1,12 +1,12 @@
-﻿using KebabApplication.DTO;
-using KebabApplication.Services;
+﻿using KebabApplication.DatabaseMonitor;
+using KebabApplication.DTO;
+using KebabApplication.Services.Contracts;
 using KebabApplication.StateMachine;
-using KebabInfrastructure;
 using KebabInfrastructure.DatabaseMonitor;
+using Serilog.Core;
 using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -16,21 +16,28 @@ namespace KebabMasterApp
     /// Interaction logic for OrderManagementControl.xaml
     /// </summary>
     public partial class OrderManagementControl : UserControl, IDisposable
-    {
+    { 
+
+        private readonly IDatabaseMonitor databaseMonitor;
+        private readonly Logger logger;
+        private readonly IOrderService orderService;
+
         public ObservableCollection<OrderDTO> Orders =
             new ObservableCollection<OrderDTO>();
         private DatabaseMonitor monitor;
 
-        public OrderManagementControl()
+        public OrderManagementControl(
+            IOrderService orderServ,
+            IDatabaseMonitor monitor,
+            Logger log)
         {
             InitializeComponent();
-            var orders = new OrdersService().GetTodayOrders();
-            Orders = new ObservableCollection<OrderDTO>(orders);
-            monitor = new DatabaseMonitor(SynchronizationContext.Current);
-            orderList.ItemsSource = Orders;
-            orderList.Items.SortDescriptions.Add(new SortDescription("CreationDate", ListSortDirection.Descending));
-            monitor.StartMonitoring(Orders, false);
+            orderService = orderServ;
+            databaseMonitor = monitor;
+            logger = log;
+            SetUI();
 
+            databaseMonitor.StartMonitoring(Orders, false);
         }
 
         public void Dispose()
@@ -47,11 +54,18 @@ namespace KebabMasterApp
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             upStatusBtn.IsEnabled = false;
-            var machine = new OrderStatusSimpleStateMachine(new OrdersService());
+            var machine = new OrderStatusSimpleStateMachine(orderService);
             var item = (OrderDTO)orderList.SelectedItem;
 
             machine.UpState(item, Orders);
             upStatusBtn.IsEnabled = true ;
+        }
+
+        private void SetUI()
+        {
+            Orders = new ObservableCollection<OrderDTO>(orderService.GetTodayOrders());
+            orderList.ItemsSource = Orders;
+            orderList.Items.SortDescriptions.Add(new SortDescription("CreationDate", ListSortDirection.Descending));
         }
     }
 

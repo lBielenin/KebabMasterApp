@@ -1,14 +1,17 @@
 ﻿using KebabCore.DomainModels.Menu;
 using KebabCore.DomainModels.Orders;
 using KebabCore.Models.Orders;
+using KebabInfrastructure.Options;
 using KebabInfrastructure.Views;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 
 namespace KebabInfrastructure.Context
 {
-    public class KebabMenuDbContext : DbContext
+    public class KebabDbContext : DbContext, IDisposable
     {
+        private readonly KebabDBConnectionSettings options;
         public DbSet<Menu> Menus { get; set; }
         public DbSet<MenuItem> MenuItems { get; set; }
         public DbSet<Item> Items { get; set; }
@@ -18,41 +21,23 @@ namespace KebabInfrastructure.Context
         public DbSet<MenuView> MenuView { get; set; }
         public DbSet<OrderView> OrderView { get; set; }
 
+        public KebabDbContext(IOptions<KebabDBConnectionSettings> settings)
+        {
+            options = settings.Value;
+        }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             
-            optionsBuilder.UseSqlServer(
-                @"Data Source=localhost;Initial Catalog=KebabDB;Integrated Security=True");
+            optionsBuilder.UseSqlServer(options.ConnectionString);
         }
 
         public int GetOrderNumberById(Guid orderId)
         {
-            object value = new object();
-            string queryString = "SELECT TOP 1 [OrderNumber] FROM [dbo].[Orders]WHERE OrderId = @orderId";
-
-            using (var conn = new SqlConnection(@"Data Source=localhost;Initial Catalog=KebabDB;Integrated Security=True"))
-            {
-                SqlCommand command = new SqlCommand(queryString, conn);
-                command.Parameters.AddWithValue("@orderId", orderId);
-                conn.Open();
-                SqlDataReader reader = command.ExecuteReader();
-                try
-                {
-                    while (reader.Read())
-                    {
-                        value = reader["OrderNumber"];
-                    }
-                }
-                finally
-                {
-                    reader.Close();
-                }
-
-            }
-
-            return (int) value;
-
+            return MakeADONetCall<int>(
+                ADONetQueries.OrderNumberByIdQuery, "OrderNumber", 
+                new List<(string paramName, object par)> { ("@orderId", orderId) });
         }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<MenuView>().HasNoKey();
@@ -90,15 +75,39 @@ namespace KebabInfrastructure.Context
                 .Entity<OrderView>()
                 .Property(v => v.CategoryName)
                 .HasConversion<string>();
+        }
 
+        private T MakeADONetCall<T>(string query, string columnName, List<(string paramName, object par)> queryParams)
+        {
+            object value = new object();
 
+            using (var conn = new SqlConnection(options.ConnectionString))
+            {
+                SqlCommand command = new SqlCommand(query, conn);
+                queryParams.ForEach(par => command.Parameters.AddWithValue(par.paramName, par.par));
+                conn.Open();
+                SqlDataReader reader = command.ExecuteReader();
+                try
+                {
+                    while (reader.Read())
+                    {
+                        value = reader[columnName];
+                    }
+                }
+                finally
+                {
+                    reader.Close();
+                }
 
-            //                public Category CategoryName { get; set; }
-            //public int OrderNumber { get; set; }
-            //public int Quantity { get; set; }
-            //public Status StatusName { get; set; }
-            //public PaymentForm PaymentForm { get; set; }
-            //public OrderForm OrderForm { get; set; }
+            }
+
+            return (T)value;
+        }
+
+        public override void Dispose()
+        {
+            Console.WriteLine("Test");
+            base.Dispose();
         }
     }
 }

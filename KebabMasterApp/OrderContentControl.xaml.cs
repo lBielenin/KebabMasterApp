@@ -1,11 +1,11 @@
 ﻿using KebabApplication.DTO;
-using KebabApplication.Services;
+using KebabApplication.Mapper;
+using KebabApplication.Services.Contracts;
 using KebabCore.DomainModels.Orders;
 using KebabCore.Enums;
 using KebabCore.Models.Orders;
-using KebabInfrastructure;
-using KebabInfrastructure.DatabaseMonitor;
 using KebabInfrastructure.Views;
+using Serilog.Core;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -21,35 +21,32 @@ namespace KebabMasterApp
     /// </summary>
     public partial class OrderContentControl : UserControl
     {
+        private readonly IMenuService menuService;
+        private readonly IOrderService orderService;
+        private readonly Logger logger;
+        public int NewOrderNumber;
         public List<MenuView> Menu;
         public ObservableCollection<OrderMenuItemDTO> Order =
             new ObservableCollection<OrderMenuItemDTO>();
 
-        public int NewOrderNumber = 0;
-
-        public OrderContentControl()
+        public OrderContentControl(
+            IMenuService menuSer,
+            IOrderService orderSer,
+            Logger log)
         {
+            menuService = menuSer;
+            orderService = orderSer;
+            logger = log;
+
             InitializeComponent();
-            var repo = new MenuService();
-            Menu = repo.GetNewestMenu();
 
-            menu.ItemsSource = Menu;
-            order.ItemsSource = Order;
-            paymentCombo.ItemsSource = Enum.GetValues(typeof(PaymentForm));
-            orderFormCombo.ItemsSource = Enum.GetValues(typeof(OrderForm));
-
-            CollectionView view = (CollectionView)CollectionViewSource.GetDefaultView(menu.ItemsSource);
-
-            PropertyGroupDescription groupDescription = new PropertyGroupDescription("ItemCategory");
-            view.GroupDescriptions.Add(groupDescription);
+            Menu = menuService.GetNewestMenu();
+            SetUI();
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            var index = menu.SelectedIndex;
-            if (index == -1)
-                return;
-            var itemToAdd = Menu[index];
+            MenuView? itemToAdd = (MenuView)menu.SelectedItem;
             var itemToUpdate = Order.FirstOrDefault(o => o.MenuItemId == itemToAdd.MenuItemId);
 
             if (itemToUpdate != null)
@@ -57,14 +54,8 @@ namespace KebabMasterApp
                 itemToUpdate.Quantity++;
                 return;
             }
-
-            Order.Add(new OrderMenuItemDTO { 
-                Category = itemToAdd.ItemCategory, Description = itemToAdd.ItemDescription, 
-                ItemId = itemToAdd.ItemId, MenuId = itemToAdd.MenuId, 
-                MenuItemId = itemToAdd.MenuItemId, Name = itemToAdd.ItemName, 
-                Price = itemToAdd.ItemPrice, Quantity = 1 });
-
-
+            
+            Order.Add(Mapper.MapMenuViewToOrderMenuItemOrderDTO(itemToAdd));
         }
         
         private void Minus_OnClick(object sender, RoutedEventArgs e)
@@ -90,19 +81,21 @@ namespace KebabMasterApp
             var payment = paymentCombo.SelectedItem;
             var form = orderFormCombo.SelectedItem;
 
-            var order = new Order()
-            {
-                OrderId = Guid.NewGuid(),
-                OrderItem = this.Order.Select(o => new OrderItem { MenuItemId = o.MenuItemId, OrderItemId = Guid.NewGuid(), Quantity = o.Quantity }).ToList(),
-                PaymentMethod = (int)payment,
-                OrderForm = (int)form,
-                StatusId = (int)Status.Added,
-                CreationDate = DateTime.Now
-            };
+            var orderId = Guid.NewGuid();
+            var order =
+                new Order(
+                    orderId,
+                    (int)payment,
+                    (int)form,
+                    (int)Status.Added,
+                    "",
+                    DateTime.Now,
+                    Order.Select(o => new OrderItem(Guid.NewGuid(), orderId, o.MenuItemId, o.Quantity)).ToList());
+
             addPosBtn.IsEnabled = false;
             placeOrderBtn.IsEnabled = false;
 
-            var orderNumber = new OrdersService().PlaceOrderReturnValue(order);
+            var orderNumber = orderService.PlaceOrderReturnValue(order);
             NewOrderNumber = orderNumber;
             textBoxOrderNumber.Text = orderNumber.ToString();
             finishPopup.IsOpen = true;
@@ -115,6 +108,19 @@ namespace KebabMasterApp
             finishPopup.IsOpen = false;
             MainWindow parentWindow = (MainWindow)Window.GetWindow(this);
             parentWindow.ChangeContentToStarter();
+        }
+
+        private void SetUI()
+        {
+            menu.ItemsSource = Menu;
+            order.ItemsSource = Order;
+            paymentCombo.ItemsSource = Enum.GetValues(typeof(PaymentForm));
+            orderFormCombo.ItemsSource = Enum.GetValues(typeof(OrderForm));
+
+            CollectionView view = (CollectionView)CollectionViewSource.GetDefaultView(menu.ItemsSource);
+
+            PropertyGroupDescription groupDescription = new PropertyGroupDescription("ItemCategory");
+            view.GroupDescriptions.Add(groupDescription);
         }
     }
 }

@@ -1,27 +1,23 @@
 ﻿using KebabApplication.DTO;
+using KebabApplication.Services.Contracts;
 using KebabCore.DomainModels.Orders;
 using KebabCore.Enums;
 using KebabInfrastructure.Context;
-using System.Data.Entity;
 
 namespace KebabApplication.Services
 {
-    public class OrdersService : IDisposable
+    public class OrdersService : IDisposable, IOrderService
     {
-        private KebabMenuDbContext dbContext;
-        private KebabMenuDbContext DbContext
+        private KebabDbContext dbContext;
+
+        public OrdersService(KebabDbContext dbContext)
         {
-            get
-            {
-                if (dbContext is null)
-                    dbContext = new KebabMenuDbContext();
-                return dbContext;
-            }
+            this.dbContext = dbContext;
         }
 
         public List<OrderDTO> GetTodayOrders()
         {
-            List<KebabInfrastructure.Views.OrderView>? views = DbContext.OrderView
+            List<KebabInfrastructure.Views.OrderView>? views = dbContext.OrderView
                 .Where(o => o.OrderCreationDate.Date == DateTime.Now.Date)
                 .OrderByDescending(o => o.OrderCreationDate).ToList();
             return Mapper.Mapper.MapOrderViewsToOrders(views);
@@ -29,27 +25,27 @@ namespace KebabApplication.Services
 
         public int PlaceOrderReturnValue(Order order)
         {
-            DbContext.Orders.Add(order);
-            DbContext.SaveChanges();
+            dbContext.Orders.Add(order);
+            dbContext.SaveChanges();
 
-            return DbContext.GetOrderNumberById(order.OrderId);
+            return dbContext.GetOrderNumberById(order.OrderId);
         }
         public void UpdateOrderStatus(Guid orderId, Status status)
         {
-            var order = DbContext.Orders.First(o => o.OrderId == orderId);
+            var order = dbContext.Orders.First(o => o.OrderId == orderId);
             order.StatusId = (int)status;
-            DbContext.Update(order);
-            DbContext.SaveChanges();
+            dbContext.Update(order);
+            dbContext.SaveChanges();
 
         }
 
         public void RemoveOrder(Guid orderId)
         {
-            var order = DbContext.Orders.First(o => o.OrderId == orderId);
-            IQueryable<KebabCore.Models.Orders.OrderItem>? orderItems = DbContext.OrderItem.Where(o => o.OrderId == orderId);
-            DbContext.OrderItem.RemoveRange(orderItems);
-            DbContext.Orders.Remove(order);
-            DbContext.SaveChanges();
+            var order = dbContext.Orders.First(o => o.OrderId == orderId);
+            IQueryable<KebabCore.Models.Orders.OrderItem>? orderItems = dbContext.OrderItem.Where(o => o.OrderId == orderId);
+            dbContext.OrderItem.RemoveRange(orderItems);
+            dbContext.Orders.Remove(order);
+            dbContext.SaveChanges();
         }
         public void Dispose()
         {

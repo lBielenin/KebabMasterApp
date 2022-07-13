@@ -12,11 +12,16 @@
             <RowDefinition Height="4*"/>
             <RowDefinition Height="1*"/>
         </Grid.RowDefinitions>
+        <StackPanel>
+            <TextBlock FontSize="30" Text="Order Status" TextAlignment="Center"></TextBlock>
+            <TextBlock FontSize="20" Text="Please, collect your order as soon as it turns green! Thank You!" TextAlignment="Center"></TextBlock>
+
+        </StackPanel>
         <ListView x:Name="orderList" Grid.Row="1" Margin="10 10 10 10" BorderThickness="1" BorderBrush="Black" HorizontalAlignment="Center" MinWidth="300">
             <ListView.View >
                 <GridView>
-                    <GridViewColumn Header="Number"  DisplayMemberBinding="{Binding OrderNumber}" />
-                    <GridViewColumn Header="Status"  DisplayMemberBinding="{Binding Status}" />
+                    <GridViewColumn Width="150" Header="Number"  DisplayMemberBinding="{Binding OrderNumber}" />
+                    <GridViewColumn Width="150" Header="Status"  DisplayMemberBinding="{Binding Status}" />
                 </GridView>
             </ListView.View>
             <ListView.ItemContainerStyle>

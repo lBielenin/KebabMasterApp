@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:KebabMasterApp"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="MainWindow" Height="550" Width="1000">
 
     <Grid>
         <Grid.RowDefinitions>
@@ -14,5 +14,20 @@
         <DockPanel>
             <ContentControl x:Name="ContentArea" Grid.Row="0"/>
         </DockPanel>
+        <Popup   Name="errorPopUp" HorizontalAlignment="Center" VerticalAlignment="Center"  
+            Width="250" Height="150" IsOpen="False" PlacementTarget="{Binding ElementName=MainWindow}"
+    Placement="Center" AllowsTransparency="True" >
+            <Grid Background="WhiteSmoke">
+                <Grid.RowDefinitions>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+                <TextBlock  Text="Critical error occured!" Grid.Row="0" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                <TextBlock  Text="Please, contact administrator!" Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                <Button Grid.Row="3" Content="OK" Margin="5" Click="Error_PopUp_Confirm"/>
+            </Grid>
+        </Popup>
     </Grid>
 </Window>

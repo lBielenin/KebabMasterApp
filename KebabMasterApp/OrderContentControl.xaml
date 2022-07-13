@@ -16,13 +16,12 @@
             <RowDefinition Height="219*" />
             <RowDefinition Height="129*" />
         </Grid.RowDefinitions>
-        <TextBlock FontSize="50" Text="Menu"/>
-        <ListView x:Name="menu" Grid.Column="0" Grid.Row="1" Margin="0,39,0,0" >
-
+        <TextBlock FontSize="48" Text="KebabMaster Menu"/>
+        <ListView x:Name="menu" Grid.Column="0" Grid.Row="1" Margin="15,0,15,0" >
             <ListView.View>
                 <GridView>
-                    <GridViewColumn Header="Name" DisplayMemberBinding="{Binding ItemName}" />
-                    <GridViewColumn Header="Price" DisplayMemberBinding="{Binding ItemPrice}" />
+                    <GridViewColumn Width="150" Header="Name" DisplayMemberBinding="{Binding ItemName}" />
+                    <GridViewColumn Width="150" Header="Price" DisplayMemberBinding="{Binding ItemPrice}" />
                 </GridView>
             </ListView.View>
             <ListView.GroupStyle>
@@ -36,20 +35,19 @@
             </ListView.GroupStyle>
         </ListView>
         <ListView x:Name="order" Grid.Column="1" Grid.Row="1" Margin="15,15,15,15" >
-
             <ListView.View>
                 <GridView>
                     <GridViewColumn Header="Name" Width="120" DisplayMemberBinding="{Binding Name}" />
-                    <GridViewColumn Header="Price" Width="50" DisplayMemberBinding="{Binding Price}" />
-                    <GridViewColumn Header="Quantity" Width="50" DisplayMemberBinding="{Binding Quantity}" />
-                    <GridViewColumn Header="" Width="50" >
+                    <GridViewColumn Header="Price" Width="100" DisplayMemberBinding="{Binding Price}" />
+                    <GridViewColumn Header="Quantity" Width="100" DisplayMemberBinding="{Binding Quantity}" />
+                    <GridViewColumn Header="" Width="80" >
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
                                 <Button x:Name="minusBtn" Content="-" Click="Minus_OnClick"/>
                             </DataTemplate>
                         </GridViewColumn.CellTemplate>
                     </GridViewColumn>
-                    <GridViewColumn Header="" Width="50" >
+                    <GridViewColumn Header="" Width="80" >
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
                                 <Button x:Name="plusBtn" Content="+" Click="Plus_OnClick"/>
@@ -94,7 +92,15 @@
             </Button>
         </Grid>
         <Button Name="addPosBtn" Content="Add Position" Margin="19,26,270,75" Grid.Row="2" Click="Button_Click" >
-
+            <Button.Style>
+                <Style TargetType="{x:Type Button}">
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding ElementName=menu, Path=SelectedItem, Mode=OneWay}" Value="{x:Null}">
+                            <Setter Property="IsEnabled" Value="False"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </Button.Style>
         </Button>
         <Popup   Name="finishPopup" HorizontalAlignment="Center" VerticalAlignment="Center"  
             Width="250" Height="150" IsOpen="False" PlacementTarget="{Binding ElementName=OrderContentControl}"

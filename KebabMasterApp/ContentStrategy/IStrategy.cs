@@ -2,7 +2,7 @@
 
 namespace KebabMasterApp.ContentStrategy
 {
-    interface IStrategy
+    public interface IStrategy
     {
         void DisplayContent(ContentControl contentRef);    
     }

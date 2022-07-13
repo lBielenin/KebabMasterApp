@@ -1,9 +1,12 @@
 ﻿
+using KebabApplication.DatabaseMonitor;
 using KebabApplication.DTO;
 using KebabApplication.Mapper;
 using KebabCore.DomainModels.Orders;
 using KebabCore.Enums;
 using KebabInfrastructure.Context;
+using KebabInfrastructure.Options;
+using Microsoft.Extensions.Options;
 using System.Collections.ObjectModel;
 using TableDependency.SqlClient;
 using TableDependency.SqlClient.Base.Enums;
@@ -11,19 +14,20 @@ using TableDependency.SqlClient.Base.EventArgs;
 
 namespace KebabInfrastructure.DatabaseMonitor
 {
-    public class DatabaseMonitor : IDisposable
+    public class DatabaseMonitor : IDatabaseMonitor
     {
-        private KebabMenuDbContext dbContext;
-        private static string connection = "Data Source=localhost;Initial Catalog=KebabDB;Integrated Security=True";
+        private KebabDbContext dbContext;
+        private string connection;
         private SqlTableDependency<Order> orderDependency;
         private ObservableCollection<OrderDTO> orders;
         private object lockObj = new object();
         private SynchronizationContext uiContext;
 
-        public DatabaseMonitor(SynchronizationContext context)
+        public DatabaseMonitor(SynchronizationContext context, IOptions<KebabDBConnectionSettings> dbOptions, KebabDbContext dbCtx)
         {
-            dbContext = new KebabMenuDbContext();
+            dbContext = dbCtx;
             uiContext = context;
+            connection = dbOptions.Value.ConnectionString;
         }
         public async Task StartMonitoring(ObservableCollection<OrderDTO> ord, bool updateMonit)
         {
@@ -46,7 +50,8 @@ namespace KebabInfrastructure.DatabaseMonitor
                 lock (lockObj)
                 {
 
-                    var items = Mapper.MapOrderViewsToOrders(dbContext.OrderView.Where(o => o.OrderId == changedEntity.OrderId).ToList());
+                    var items = Mapper.MapOrderViewsToOrders(
+                        dbContext.OrderView.Where(o => o.OrderId == changedEntity.OrderId).ToList());
                     items.ForEach(i => uiContext.Send(x => orders.Add(i), null));
                 };
             }
