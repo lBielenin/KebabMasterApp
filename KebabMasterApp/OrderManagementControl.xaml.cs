@@ -52,6 +52,8 @@ namespace KebabMasterApp
             var machine = new OrderStatusSimpleStateMachine(orderService);
             var item = (OrderDTO)orderList.SelectedItem;
 
+            if (item == null)
+                return;
             machine.UpState(item, Orders);
             upStatusBtn.IsEnabled = true;
         }

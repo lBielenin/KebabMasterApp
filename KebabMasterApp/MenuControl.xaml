@@ -6,7 +6,7 @@
              xmlns:local="clr-namespace:KebabMasterApp"
              mc:Ignorable="d" 
              d:DesignHeight="550" d:DesignWidth="1000">
-    <Grid RenderTransformOrigin="0.485,0.471" ShowGridLines="True">
+    <Grid RenderTransformOrigin="0.485,0.471" >
         <Grid.ColumnDefinitions>
             <ColumnDefinition/>
             <ColumnDefinition/>
@@ -111,7 +111,7 @@
             </Button.Style>
         </Button>
         <Popup   Name="finishPopup" HorizontalAlignment="Center" VerticalAlignment="Center"  
-            Width="250" Height="250" IsOpen="False" PlacementTarget="{Binding ElementName=OrderContentControl}"
+            Width="250" Height="250" IsOpen="False" PlacementTarget="{Binding ElementName=window}"
             Placement="Center" AllowsTransparency="True" >
             <Grid Background="WhiteSmoke">
                 <Grid.RowDefinitions>
