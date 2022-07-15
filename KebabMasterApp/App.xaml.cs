@@ -52,7 +52,7 @@ namespace KebabMasterApp
                     serviceProvider.GetService<KebabDbContext>()));
             services.AddSingleton<MainWindow>();
         }
-
+        
         private void OnStartup(object sender, StartupEventArgs e)
         {
             var mainWindow = serviceProvider.GetService<MainWindow>();
