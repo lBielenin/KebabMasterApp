@@ -9,3 +9,5 @@ Modes are:
 - Order Viewer (arg: -viewer): for customers for checking order status.
 
 Program requires MS SQL Server database to work, set up script is in folder ./KebabSetUpScript
+To prevent unwanted user interaction, the "close" button was removed, program can still be closed via Alt+F4, 
+but menu kiosks aren't supposed to have keyboard connected during the day.

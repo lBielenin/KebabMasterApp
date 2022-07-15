@@ -5,6 +5,7 @@ using KebabApplication.StateMachine;
 using KebabInfrastructure.Context;
 using KebabInfrastructure.DatabaseMonitor;
 using KebabInfrastructure.Options;
+using KebabMasterApp.ContentStrategy;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using Serilog;
@@ -45,6 +46,7 @@ namespace KebabMasterApp
 
             services.AddTransient<IOrderService, OrdersService>();
             services.AddTransient<IOrderStateMachine, OrderStatusSimpleStateMachine>();
+            services.AddTransient<IDisplayStrategyContext, DisplayStrategyContext>();
 
             services.AddTransient<IDatabaseMonitor>(opt => 
                 new DatabaseMonitor(SynchronizationContext.Current, 

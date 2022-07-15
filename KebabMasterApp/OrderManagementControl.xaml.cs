@@ -7,6 +7,7 @@ using Serilog.Core;
 using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -49,12 +50,11 @@ namespace KebabMasterApp
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             upStatusBtn.IsEnabled = false;
-            var machine = new OrderStatusSimpleStateMachine(orderService);
             var item = (OrderDTO)orderList.SelectedItem;
 
             if (item == null)
                 return;
-            machine.UpState(item, Orders);
+            orderStateMachine.UpState(item, Orders);
             upStatusBtn.IsEnabled = true;
         }
 
