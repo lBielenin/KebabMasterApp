@@ -18,7 +18,7 @@
         </Grid.RowDefinitions>
         <TextBlock  Margin="10 0 0 0" TextWrapping="Wrap" Grid.Row="0" Grid.Column="0" FontSize="30" Text="KebabMaster Order Manager"/>
 
-        <Button Grid.Column="0" Grid.Row="2" VerticalAlignment="Center" HorizontalAlignment="Center" Content="Update Status"  Name="upStatusBtn" IsEnabled="{Binding IsLoggedIn}" Click="Button_Click">
+        <Button MinWidth="100" MinHeight="50" Grid.Column="0" Grid.Row="2" VerticalAlignment="Center" HorizontalAlignment="Center" Content="Update Status"  Name="upStatusBtn" IsEnabled="{Binding IsLoggedIn}" Click="Button_Click">
             <Button.Style>
                 <Style>
                     <Style.Triggers>

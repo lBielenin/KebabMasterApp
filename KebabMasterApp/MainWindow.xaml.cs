@@ -4,7 +4,9 @@ using Microsoft.Extensions.DependencyInjection;
 using Serilog.Core;
 using System;
 using System.Data.SqlClient;
+using System.Runtime.InteropServices;
 using System.Windows;
+using System.Windows.Interop;
 
 namespace KebabMasterApp
 {
@@ -20,7 +22,7 @@ namespace KebabMasterApp
         {
             try
             {
-                this.serviceProvider = serProv;
+                serviceProvider = serProv;
 
                 InitializeComponent();
 

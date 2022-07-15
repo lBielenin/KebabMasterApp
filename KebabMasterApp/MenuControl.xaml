@@ -81,7 +81,7 @@
             <ComboBox x:Name="paymentCombo" Width="120" Grid.Column="1"  VerticalAlignment="Center" HorizontalAlignment="Center" Grid.Row="0" />
             <ComboBox x:Name="orderFormCombo" Width="120" Grid.Column="1"  VerticalAlignment="Center" HorizontalAlignment="Center" Grid.Row="1" />
 
-            <Button Name="placeOrderBtn" Content="Place order"  VerticalAlignment="Center" HorizontalAlignment="Center" Grid.Row="2" Click="Place_Order_Click" Grid.Column="1">
+            <Button MinWidth="100" MinHeight="30" Name="placeOrderBtn" Content="Place order"  VerticalAlignment="Center" HorizontalAlignment="Center" Grid.Row="2" Click="Place_Order_Click" Grid.Column="1">
                 <Button.Style>
                     <Style TargetType="{x:Type Button}">
                         <Style.Triggers>
