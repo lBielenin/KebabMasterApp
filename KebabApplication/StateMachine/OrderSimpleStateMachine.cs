@@ -1,16 +1,10 @@
 ﻿using KebabApplication.DTO;
-using KebabApplication.Services;
 using KebabApplication.Services.Contracts;
 using KebabCore.Enums;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace KebabApplication.StateMachine
 {
-    public class OrderStatusSimpleStateMachine
+    public class OrderStatusSimpleStateMachine : IOrderStateMachine
     {
         private IOrderService ordersService;
 

@@ -23,10 +23,10 @@ namespace KebabInfrastructure.DatabaseMonitor
         private object lockObj = new object();
         private SynchronizationContext uiContext;
 
-        public DatabaseMonitor(SynchronizationContext context, IOptions<KebabDBConnectionSettings> dbOptions, KebabDbContext dbCtx)
+        public DatabaseMonitor(SynchronizationContext ucontext, IOptions<KebabDBConnectionSettings> dbOptions, KebabDbContext context)
         {
-            dbContext = dbCtx;
-            uiContext = context;
+            dbContext = context;
+            uiContext = ucontext;
             connection = dbOptions.Value.ConnectionString;
         }
         public async Task StartMonitoring(ObservableCollection<OrderDTO> ord, bool updateMonit)
@@ -59,7 +59,8 @@ namespace KebabInfrastructure.DatabaseMonitor
             {
                 uiContext.Send(x =>
                 {
-                    var itemsToRemove = orders.Where(o => o.OrderId == changedEntity.OrderId).ToList();
+                    var itemsToRemove = 
+                        orders.Where(o => o.OrderId == changedEntity.OrderId).ToList();
                     foreach (var itemToRemove in itemsToRemove)
                     {
                         orders.Remove(itemToRemove);

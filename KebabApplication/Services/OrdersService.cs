@@ -10,9 +10,9 @@ namespace KebabApplication.Services
     {
         private KebabDbContext dbContext;
 
-        public OrdersService(KebabDbContext dbContext)
+        public OrdersService(KebabDbContext context)
         {
-            this.dbContext = dbContext;
+            dbContext = context;
         }
 
         public List<OrderDTO> GetTodayOrders()

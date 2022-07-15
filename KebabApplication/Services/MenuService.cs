@@ -19,10 +19,8 @@ namespace KebabApplication.Services
             var id = GetNewestMenuId(dbContext);
             var menu = dbContext.MenuView.Where(v => v.MenuId == id).ToList();
             menu.Sort((MenuView vp, MenuView vn) => ((int)vp.ItemCategory).CompareTo((int)vn.ItemCategory));
+            
             return menu;
-
-
-
         }
 
         private Guid GetNewestMenuId(KebabDbContext context)
