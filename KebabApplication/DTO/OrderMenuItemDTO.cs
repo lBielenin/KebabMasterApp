@@ -15,8 +15,11 @@ namespace KebabApplication.DTO
             get => quantity;
             set
             {
-                quantity = value;
-                OnPropertyRaised("Quantity");
+                if(value > 0 && value < 11)
+                {
+                    quantity = value;
+                    OnPropertyRaised("Quantity");
+                }
             }
         }
         public string Name { get; set; }
