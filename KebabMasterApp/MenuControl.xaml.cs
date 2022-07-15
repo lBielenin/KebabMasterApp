@@ -19,32 +19,31 @@ namespace KebabMasterApp
     /// <summary>
     /// Interaction logic for OrderContentControl.xaml
     /// </summary>
-    public partial class OrderContentControl : UserControl
+    public partial class MenuControl : UserControl
     {
         private readonly IMenuService menuService;
         private readonly IOrderService orderService;
-        private readonly Logger logger;
         public int NewOrderNumber;
         public List<MenuView> Menu;
         public ObservableCollection<OrderMenuItemDTO> Order =
             new ObservableCollection<OrderMenuItemDTO>();
+        private decimal currentOrderSum = 0;
 
-        public OrderContentControl(
+        public MenuControl(
             IMenuService menuSer,
-            IOrderService orderSer,
-            Logger log)
+            IOrderService orderSer)
         {
             menuService = menuSer;
             orderService = orderSer;
-            logger = log;
 
             InitializeComponent();
 
             Menu = menuService.GetNewestMenu();
+            sumVal.Text = currentOrderSum.ToString();
             SetUI();
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
+        private void Add_Click(object sender, RoutedEventArgs e)
         {
             MenuView? itemToAdd = (MenuView)menu.SelectedItem;
             var itemToUpdate = Order.FirstOrDefault(o => o.MenuItemId == itemToAdd.MenuItemId);
@@ -52,12 +51,15 @@ namespace KebabMasterApp
             if (itemToUpdate != null)
             {
                 itemToUpdate.Quantity++;
-                return;
+            } else
+            {
+                Order.Add(Mapper.MapMenuViewToOrderMenuItemOrderDTO(itemToAdd));
             }
-            
-            Order.Add(Mapper.MapMenuViewToOrderMenuItemOrderDTO(itemToAdd));
+            currentOrderSum += itemToAdd.ItemPrice;
+            sumVal.Text = currentOrderSum.ToString();
+
         }
-        
+
         private void Minus_OnClick(object sender, RoutedEventArgs e)
         {
             var btn = (Button)sender;
@@ -67,6 +69,8 @@ namespace KebabMasterApp
                 ctx.Quantity--;
             else
                 Order.Remove(ctx);
+            currentOrderSum -= ctx.Price;
+            sumVal.Text = currentOrderSum.ToString();
         }
 
         private void Plus_OnClick(object sender, RoutedEventArgs e)
@@ -74,9 +78,12 @@ namespace KebabMasterApp
             var btn = (Button)sender;
             var ctx = (OrderMenuItemDTO)btn.DataContext;
             ctx.Quantity++;
+
+            currentOrderSum += ctx.Price;
+            sumVal.Text = currentOrderSum.ToString();
         }
 
-        private void Button_Click_1(object sender, RoutedEventArgs e)
+        private void Place_Order_Click(object sender, RoutedEventArgs e)
         {
             var payment = paymentCombo.SelectedItem;
             var form = orderFormCombo.SelectedItem;

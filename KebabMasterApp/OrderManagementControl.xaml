@@ -30,17 +30,17 @@
                 </Style>
             </Button.Style>
         </Button>
-        <ListView x:Name="orderList" Grid.Column="0" Grid.Row="1" SelectionChanged="ListBox_SelectionChanged" Margin="10 10 10 10" BorderThickness="1" BorderBrush="Black">
+        <ListView x:Name="orderList" Grid.Column="0" Grid.Row="1" SelectionChanged="ListBox_SelectionChanged" Margin="10 10 10 10" BorderThickness="1" BorderBrush="Black" FontSize="15">
             <ListView.View >
                 <GridView>
-                    <GridViewColumn Width="100" Header="Time"  DisplayMemberBinding="{Binding CreationDate}" />
+                    <GridViewColumn Width="100" Header="Time"  DisplayMemberBinding="{Binding CreationDate,  StringFormat=t, ConverterCulture=en-uk}" />
                     <GridViewColumn Width="100" Header="Number"  DisplayMemberBinding="{Binding OrderNumber}" />
                     <GridViewColumn Width="100" Header="Status"  DisplayMemberBinding="{Binding Status}" />
                 </GridView>
             </ListView.View>
         </ListView>
         <Border BorderBrush="Black" BorderThickness="1" Grid.Row="1" Grid.Column="1" Margin="10 10 10 10" >
-            <TextBox VerticalContentAlignment="Center" Name="orderDetailsTextBlock"  TextAlignment="Center"></TextBox>
+            <TextBox VerticalContentAlignment="Center" Name="orderDetailsTextBlock"  TextAlignment="Center" Text="Details" FontSize="20"></TextBox>
         </Border>
     </Grid>
 </UserControl>

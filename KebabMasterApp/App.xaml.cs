@@ -1,6 +1,7 @@
 ﻿using KebabApplication.DatabaseMonitor;
 using KebabApplication.Services;
 using KebabApplication.Services.Contracts;
+using KebabApplication.StateMachine;
 using KebabInfrastructure.Context;
 using KebabInfrastructure.DatabaseMonitor;
 using KebabInfrastructure.Options;
@@ -41,7 +42,10 @@ namespace KebabMasterApp
 
             services.AddDbContext<KebabDbContext>();
             services.AddTransient<IMenuService, MenuService>();
+
             services.AddTransient<IOrderService, OrdersService>();
+            services.AddTransient<IOrderStateMachine, OrderStatusSimpleStateMachine>();
+
             services.AddTransient<IDatabaseMonitor>(opt => 
                 new DatabaseMonitor(SynchronizationContext.Current, 
                     serviceProvider.GetService<IOptions<KebabDBConnectionSettings>>(), 

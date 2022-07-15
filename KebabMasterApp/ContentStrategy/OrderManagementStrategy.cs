@@ -1,5 +1,6 @@
 ﻿using KebabApplication.DatabaseMonitor;
 using KebabApplication.Services.Contracts;
+using KebabApplication.StateMachine;
 using Serilog.Core;
 using System.Windows.Controls;
 
@@ -8,21 +9,21 @@ namespace KebabMasterApp.ContentStrategy
     internal class OrderManagementStrategy : IStrategy
     {
         private readonly IOrderService orderService;
-        private readonly IDatabaseMonitor monitor;
-        private readonly Logger logger;
+        private readonly IDatabaseMonitor dbMonitor;
+        private readonly IOrderStateMachine orderStateMachine;
 
         public OrderManagementStrategy(
-            IOrderService orderService,
+            IOrderService ordService,
             IDatabaseMonitor monitor,
-            Logger logger)
+            IOrderStateMachine stateMachine)
         {
-            this.orderService = orderService;
-            this.monitor = monitor;
-            this.logger = logger;
+            orderService = ordService;
+            dbMonitor = monitor;
+            orderStateMachine = stateMachine;
         }
         public void DisplayContent(ContentControl contentRef)
         {
-            contentRef.Content = new OrderManagementControl(orderService, monitor, logger);
+            contentRef.Content = new OrderManagementControl(orderService, dbMonitor, orderStateMachine);
         }
     }
 }

@@ -28,7 +28,7 @@ namespace KebabMasterApp
         private void ClientScreen_Click(object sender, RoutedEventArgs e)
         {
             MainWindow parentWindow = (MainWindow) Window.GetWindow(this);
-            parentWindow.ChangeContent();
+            parentWindow.ChangeContentToMenu();
         }
 
         private void PopUp_Button_Confirm(object sender, RoutedEventArgs e)

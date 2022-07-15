@@ -15,7 +15,6 @@ namespace KebabMasterApp
     public partial class OrderViewerControl : UserControl, IDisposable
     {
         private IDatabaseMonitor databaseMonitor;
-        private readonly Logger logger;
         private readonly IOrderService orderService;
 
         public ObservableCollection<OrderDTO> Orders =
@@ -23,13 +22,11 @@ namespace KebabMasterApp
 
         public OrderViewerControl(
             IOrderService orderServ, 
-            IDatabaseMonitor monitor,
-            Logger log)
+            IDatabaseMonitor monitor)
         {
             InitializeComponent();
             orderService = orderServ;
             databaseMonitor = monitor;
-            logger = log;
             SetUi();
             databaseMonitor.StartMonitoring(Orders, true);
 

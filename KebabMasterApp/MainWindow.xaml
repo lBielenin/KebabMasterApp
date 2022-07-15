@@ -24,7 +24,7 @@
                     <RowDefinition/>
                     <RowDefinition/>
                 </Grid.RowDefinitions>
-                <TextBlock  Text="Critical error occured!" Grid.Row="0" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                <TextBlock Name="errorHeader" Grid.Row="0" HorizontalAlignment="Center" VerticalAlignment="Center" />
                 <TextBlock  Text="Please, contact administrator!" Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center" />
                 <Button Grid.Row="3" Content="OK" Margin="5" Click="Error_PopUp_Confirm"/>
             </Grid>

@@ -11,6 +11,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "KebabCore", "KebabCore\Keba
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "KebabApplication", "KebabApplication\KebabApplication.csproj", "{69F398FD-1E81-4285-B4BC-C516CF098E5B}"
 EndProject
+Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "KebabInstaller", "KebabInstaller\KebabInstaller.vdproj", "{585E4C7B-E30E-4183-AE00-837E1666D7E6}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,8 @@ Global
 		{69F398FD-1E81-4285-B4BC-C516CF098E5B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{69F398FD-1E81-4285-B4BC-C516CF098E5B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{69F398FD-1E81-4285-B4BC-C516CF098E5B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{585E4C7B-E30E-4183-AE00-837E1666D7E6}.Debug|Any CPU.ActiveCfg = Debug
+		{585E4C7B-E30E-4183-AE00-837E1666D7E6}.Release|Any CPU.ActiveCfg = Release
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

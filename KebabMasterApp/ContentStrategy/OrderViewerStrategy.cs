@@ -11,20 +11,17 @@ namespace KebabMasterApp.ContentStrategy
     {
         private readonly IOrderService orderService;
         private readonly IDatabaseMonitor databaseMonitor;
-        private readonly Logger logger;
 
         public OrderViewerStrategy(
-            IOrderService orderService, 
-            IDatabaseMonitor databaseMonitor,
-            Logger logger)
+            IOrderService ordService, 
+            IDatabaseMonitor monitor)
         {
-            this.orderService = orderService;
-            this.databaseMonitor = databaseMonitor;
-            this.logger = logger;
+            orderService = ordService;
+            databaseMonitor = monitor;
         }
         public void DisplayContent(ContentControl contentRef)
         {
-            contentRef.Content = new OrderViewerControl(orderService, databaseMonitor, logger);
+            contentRef.Content = new OrderViewerControl(orderService, databaseMonitor);
         }
     }
 }

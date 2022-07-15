@@ -19,31 +19,26 @@ namespace KebabMasterApp
     { 
 
         private readonly IDatabaseMonitor databaseMonitor;
-        private readonly Logger logger;
         private readonly IOrderService orderService;
+        private readonly IOrderStateMachine orderStateMachine;
 
         public ObservableCollection<OrderDTO> Orders =
             new ObservableCollection<OrderDTO>();
         private DatabaseMonitor monitor;
 
+
         public OrderManagementControl(
             IOrderService orderServ,
             IDatabaseMonitor monitor,
-            Logger log)
+            IOrderStateMachine stateMachine)
         {
             InitializeComponent();
             orderService = orderServ;
             databaseMonitor = monitor;
-            logger = log;
+            orderStateMachine = stateMachine;
             SetUI();
 
             databaseMonitor.StartMonitoring(Orders, false);
-        }
-
-        public void Dispose()
-        {
-            monitor?.Dispose();
-            
         }
 
         public void ListBox_SelectionChanged(object sender, RoutedEventArgs e)
@@ -58,7 +53,7 @@ namespace KebabMasterApp
             var item = (OrderDTO)orderList.SelectedItem;
 
             machine.UpState(item, Orders);
-            upStatusBtn.IsEnabled = true ;
+            upStatusBtn.IsEnabled = true;
         }
 
         private void SetUI()
@@ -67,6 +62,9 @@ namespace KebabMasterApp
             orderList.ItemsSource = Orders;
             orderList.Items.SortDescriptions.Add(new SortDescription("CreationDate", ListSortDirection.Descending));
         }
+        public void Dispose()
+        {
+            monitor?.Dispose();
+        }
     }
-
 }

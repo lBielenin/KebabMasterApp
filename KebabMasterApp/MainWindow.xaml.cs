@@ -3,6 +3,7 @@ using KebabMasterApp.ContentStrategy;
 using Microsoft.Extensions.DependencyInjection;
 using Serilog.Core;
 using System;
+using System.Data.SqlClient;
 using System.Windows;
 
 namespace KebabMasterApp
@@ -15,41 +16,91 @@ namespace KebabMasterApp
         private readonly IServiceProvider serviceProvider;
 
         public MainWindow(
-            IServiceProvider serviceProvider)
+            IServiceProvider serProv)
         {
-            InitializeComponent();
+            try
+            {
+                this.serviceProvider = serProv;
+
+                InitializeComponent();
 
 
-            var context = new DisplayStrategyContext(serviceProvider);
-            var strategy = context.GetStrategyFromCommandArgs();
+                var context = new DisplayStrategyContext(serProv);
+                var strategy = context.GetStrategyFromCommandArgs();
 
-            strategy.DisplayContent(ContentArea);
-            this.serviceProvider = serviceProvider;
+                strategy.DisplayContent(ContentArea);
+
+            }
+            catch (SqlException sqlex)
+            {
+                LogSqlErrorWithMessage(sqlex.Message);
+            }
+            catch (Exception e)
+            {
+                LogErrorWithMessage(e.Message);
+            }
         }
 
-        public void ChangeContent()
+        public void ChangeContentToMenu()
         {
-            ContentArea.Content = 
-                new OrderContentControl(
-                    serviceProvider.GetService<IMenuService>(), 
-                    serviceProvider.GetService<IOrderService>(),
-                    serviceProvider.GetService<Logger>());
+            try
+            {
+                ContentArea.Content =
+                    new MenuControl(
+                        serviceProvider.GetService<IMenuService>(),
+                        serviceProvider.GetService<IOrderService>());
+            }
+            catch (SqlException sqlex)
+            {
+                LogSqlErrorWithMessage(sqlex.Message);
+            }
+            catch (Exception e)
+            {
+                LogErrorWithMessage(e.Message);
+            }
         }
 
         public void ChangeContentToStarter()
         {
-            ContentArea.Content = new StarterControl();
+            try
+            {
+                ContentArea.Content = new StarterControl();
+
+            }
+            catch (SqlException sqlex)
+            {
+                LogSqlErrorWithMessage(sqlex.Message);
+            }
+            catch (Exception e)
+            {
+                LogErrorWithMessage(e.Message);
+            }
         }
 
         private void Error_PopUp_Confirm(object sender, RoutedEventArgs e)
         {
-            errorPopUp.IsEnabled = false;
+            errorPopUp.IsEnabled = true;
+            errorPopUp.IsOpen = true; 
             ChangeContentToStarter();
         }
 
-        public void ShowError()
+        public void ShowError(string message)
         {
+            errorHeader.Text = message;
             errorPopUp.IsEnabled = true;
+            errorPopUp.IsOpen = true;
+        }
+
+        private void LogErrorWithMessage(string message)
+        {
+            serviceProvider.GetService<Logger>().Error(message);
+            ShowError("Critical error occured!");
+        }
+
+        private void LogSqlErrorWithMessage(string message)
+        {
+            serviceProvider.GetService<Logger>().Error(message);
+            ShowError("Connection order occured!");
         }
     }
 }
